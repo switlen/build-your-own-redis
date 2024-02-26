@@ -1,6 +1,7 @@
 
 use std::{io::{Read, Write}, net::{TcpListener, TcpStream}, thread};
 use anyhow::Result;
+use std::str;
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -35,7 +36,7 @@ fn handle_connection(stream: &mut TcpStream) -> Result<()> {
     let mut buf = [0; 512];
     // read client msg and write pong
     while let Ok(bytes) = stream.read(&mut buf) {
-        println!("Received {bytes} {:?}", &buf[..bytes]);
+        println!("Received {bytes} {:?}", str::from_utf8(&buf[0..bytes]).unwrap());
         stream.write_all(PONG)?;
     }
     Ok(())
